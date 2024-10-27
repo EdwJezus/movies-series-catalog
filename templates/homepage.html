@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<style>
+    html{
+        /*font-family: Verdana, Geneva, Tahoma, sans-serif;*/
+        font-family: 'Roboto', sans-serif;
+        /*background-color: rgb(39, 37, 39);*/
+        /*background-color: rgb(23, 19, 49);*/
+        background-image: linear-gradient(to bottom right, black, purple);
+        background-size: 100% 100%;
+        background-position: center;
+        background-attachment: fixed;
+        /*margin: 20px;*/
+        color: rgb(187, 110, 255); /*text*/
+    }
+    body{
+        margin: 20px;
+        margin-top: 90px;
+    }
+    h1{
+        text-shadow: 0px 0px 10px rgb(104, 29, 168);
+    }
+    h2{
+        text-shadow: 0px 0px 10px rgb(104, 29, 168);
+    }
+    p{
+        text-shadow: 0px 0px 10px rgb(104, 29, 168);
+    }
+    .poster{
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgb(104, 29, 168);
+        max-width: 100%;
+        /*height: auto;*/
+        height: 285px;
+    }
+    .cards{
+        display: flex; 
+        flex-wrap: wrap; /* Permite que os filmes "quebrem" para uma nova linha se a tela for pequena */
+        /*justify-content: space-around; /* Espaça os filmes uniformemente */
+        gap: 20px; /* Espaço entre os filmes */
+    }
+    .card{
+        width: 200px; /* Largura de cada card de filme */
+        /* background-color: white; */
+        border: 3px;
+        border-style: solid;
+        border-color: rgb(104, 29, 168);
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align:justify;
+    }
+    .descricao{
+        font-size: smaller;
+    }
+    nav{
+        background-color: rgb(102, 8, 139);
+        padding: 10px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10;
+    }
+    li{
+        display: inline-block;
+        margin-right: 30px;
+    }
+    .linksMenu{
+        text-decoration: none;
+        color: white;
+    }
+    #pesquisaSite{
+        position: absolute;
+        border-radius: 20px;
+        background-color: rgb(74, 7, 100);
+        border-style: solid;
+        border-color:aliceblue;
+        color: white;
+        height: 30px;
+        width: 20%;
+        left: 40%;
+        top: 25%;
+    }
+
+</style>
+
+<title>Filmes</title>
+</head>
+<body>	
+        <!-- http://127.0.0.1:5000/homepage -->
+
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+        <nav>
+            <ul>
+                <li ><img src="https://resizer-acm.eco.astro.com.my/tr:w-640,q:75/https://dj7fdt04hl8tv.cloudfront.net/acm/media/product/netflix/netflix-logo-640x172.png" id="logo" width="60"></li>
+                <li><a href="/homepage" class="linksMenu">Página Inicial</a></li>
+                <li><a href="/cadastro" class="linksMenu">Cadastro</a></li>
+                <li><input type="text" id="pesquisaSite" placeholder="     Pesquise filme ou série."></li>
+            </ul>
+        </nav>
+
+        <!-- FILMES -->
+        <h1>Filmes</h1>
+        <p> Aproveite para comprar suas bebidas, pipocas, petiscos e doces para saborear enquanto assiste a um filme </p>
+        <div class="cards">
+            {% for filme in filmes %}
+                <div class="card">
+                    <h2>{{ filme.titulo }}</h2>
+                    <a href="{{ url_for('descricao_filme', id=filme.id) }}">
+                        <img src="{{ filme.poster }}" class="poster" alt="Capa do Filme {{ filme.titulo }}" height="300">
+                    </a>
+                     <!-- <img src="https://www.cineplayers.com/sites/default/files/posters/2020/08/god.jpg" class="posterFilme" height="300"> -->
+                     <p class="descricao">Ano: {{filme.ano }}</p>
+                     <p class="descricao">Gênero: {{ filme.genero }}</p>
+                     <p class="descricao">Preço: {{ filme.preco }}</p>
+                     <p class="descricao">Diretor: {{ filme.diretor }} </p>
+                     <p class="descricao">Duração: {{ filme.duracao }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <!-- SÉRIES -->
+        <h1>Séries</h1>
+        <p> Séries muito, muito, MUITO boas. Que você vai adorar.</p>
+        <div class="cards">
+            {% for serie in series %}
+                <div class="card">
+                    <h2>{{ serie.titulo }}</h2>
+                    <a href="{{ url_for('descricao_serie', id=serie.id) }}">
+                        <img src="{{ serie.poster }}" class="poster" alt="Capa da Série {{ serie.titulo }}" height="300">
+                    </a>
+                    <p class="descricao">Ano: {{ serie.ano }}</p>
+                    <p class="descricao">Gênero: {{ serie.genero }}</p>
+                    <p class="descricao">Preço: {{ serie.preco }}</p>
+                    <p class="descricao">Temporadas: {{ serie.temporadas}}</p>
+                    <p class="descricao">Duração dos Episódios: {{ serie.duracaoEps }}</p>
+                    <p class="descricao">Quantidade de Episodios por Temporada: {{ serie.qntEps }}</p>
+                </div>  
+            {% endfor %}
+        </div>
+
+
+        <br>
+        <!-- <img src="https://www.cineplayers.com/sites/default/files/posters/2020/08/god.jpg" class="posterFilme" height="300"> -->
+
+</body></html>
