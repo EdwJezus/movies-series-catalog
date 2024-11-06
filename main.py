@@ -178,6 +178,51 @@ def add_serie():
     msgSerieCadastrada = "Série cadastrada com sucesso!"
     return render_template('cadastro.html', msgSerieCadastrada=msgSerieCadastrada)
 
+############ CADASTRO DIRETOR
+@app.route('/add_diretor', methods=['POST'])
+def add_diretor():
+    nome = request.form['nome']
+    idade = request.form['idade']
+    nacionalidade = request.form['nacionalidade']
+
+    novo_diretor = Diretor(None, nome, idade, nacionalidade)
+
+    # Salva Diretor no banco SQL
+    conn = conectar_db()
+    cursor = conn.cursor()
+    cursor.execute('''
+        INSERT INTO diretores (nomeDiretor, idadeDiretor, nacionalidadeDiretor)
+        VALUES (?, ?, ?)''',
+        (novo_diretor.nome, novo_diretor.idade, novo_diretor.nacionalidade))
+    
+    conn.commit()
+    conn.close()
+
+    msgDiretorCadastrado = "Diretor cadastrado com sucesso!"
+    return render_template('cadastro.html', msgDiretorCadastrado=msgDiretorCadastrado)
+
+############ CADASTRO GENERO
+@app.route('/add_genero', methods=['POST'])
+def add_genero():
+    name = request.form['name']
+    info = request.form['info']
+    
+    novo_genero = Genero(None, name, info)
+
+    # Salva genero no banco SQL
+    conn = conectar_db()
+    cursor = conn.cursor()
+    cursor.execute('''
+        INSERT INTO generos (nameGenero, infoGenero)
+        VALUES (?, ?)''',
+        (novo_genero.name, novo_genero.info))
+    
+    conn.commit()
+    conn.close()
+
+    msgGeneroCadastrado = "Gênero cadastrado com sucesso!"
+    return render_template('cadastro.html', msgGeneroCadastrado=msgGeneroCadastrado)
+
 ################################################### Listar Filmes e Séries na homepage
 @app.route('/homepage') 
 def listar_filmes():

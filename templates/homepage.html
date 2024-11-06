@@ -8,7 +8,8 @@
         font-family: 'Roboto', sans-serif;
         /*background-color: rgb(39, 37, 39);*/
         /*background-color: rgb(23, 19, 49);*/
-        background-image: linear-gradient(to bottom right, black, purple);
+        /*background-image: linear-gradient(to bottom right, black, purple);*/
+        background-image: linear-gradient(to bottom right, black, rgb(66, 2, 93));
         background-size: 100% 100%;
         background-position: center;
         background-attachment: fixed;
@@ -33,7 +34,8 @@
         box-shadow: 0px 0px 10px rgb(104, 29, 168);
         max-width: 100%;
         /*height: auto;*/
-        height: 285px;
+        height: 300px;
+        width: 300px;
     }
     .cards{
         display: flex; 
@@ -47,10 +49,13 @@
         border: 3px;
         border-style: solid;
         border-color: rgb(104, 29, 168);
-        padding: 15px;
-        border-radius: 8px;
+        padding: 2px;
+        border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align:justify;
+        /*text-align:justify;*/
+    }
+    .card:hover{
+        border-color: white;
     }
     .descricao{
         font-size: smaller;
@@ -71,6 +76,8 @@
     .linksMenu{
         text-decoration: none;
         color: white;
+        font-size: small;
+        font-style: lighter;
     }
     #pesquisaSite{
         position: absolute;
@@ -85,66 +92,190 @@
         top: 25%;
     }
 
+    /*########### CSS CARROSSEL #############*/
+
+    .carrossel{
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 10px;
+    }
+    .dentroCarrossel{
+        display: flex;
+        transition: transform 0.5s ease;
+    }
+    .dentroCarrossel img{
+
+        width: 100%;
+        min-width: 100%;
+        height: 600px;
+        object-fit: cover;
+        object-position: 100% 30%;
+    }
+    .botaoCarrossel{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 13px;
+        padding-left: 20px;
+        padding-right: 20px;
+        cursor: pointer;
+        font-size: 18px;
+        border-radius: 50%;
+    }
+    .botaoCarrossel.esquerda{
+        left: 10px;
+    }
+    .botaoCarrossel.direita{
+        right: 10px;
+    }
+    .botaoCarrossel:hover{
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+    
 </style>
 
-<title>Filmes</title>
+<title>Página Inicial</title>
 </head>
 <body>	
         <!-- http://127.0.0.1:5000/homepage -->
 
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
+<!--######################### LINHA DE FILMES ############################################-->
+
         <nav>
             <ul>
-                <li ><img src="https://resizer-acm.eco.astro.com.my/tr:w-640,q:75/https://dj7fdt04hl8tv.cloudfront.net/acm/media/product/netflix/netflix-logo-640x172.png" id="logo" width="60"></li>
+                <!--<li ><img src="https://resizer-acm.eco.astro.com.my/tr:w-640,q:75/https://dj7fdt04hl8tv.cloudfront.net/acm/media/product/netflix/netflix-logo-640x172.png" id="logo" width="60"></li>-->
+                <li><img src="{{ url_for('static', filename='images/sukunaLogo.png') }}" width="90" id="logo" alt="Sukuna logo"></li>
                 <li><a href="/homepage" class="linksMenu">Página Inicial</a></li>
                 <li><a href="/cadastro" class="linksMenu">Cadastro</a></li>
                 <li><input type="text" id="pesquisaSite" placeholder="     Pesquise filme ou série."></li>
             </ul>
         </nav>
 
+<!--######################### CARROSSEL ############################################-->
+
+        <div class="carrossel">
+            <!--
+            {% for filme in filmes %}
+                <img src="{{ filme.background }}" id="wallpaper">
+            {% endfor %}
+            -->
+            <div class="dentroCarrossel">
+                <!--<img src="https://images4.alphacoders.com/626/626219.jpg" alt="imagem-1">-->
+                <img src="https://images6.alphacoders.com/831/831179.jpg" alt="imagem-1">
+                <!--<img src="https://images.alphacoders.com/227/thumb-1920-227571.jpg" alt="imagem-2">-->
+                <img src="https://platform.polygon.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/8833315/ST2_Vertical_Main_PRE_US.jpg?quality=90&strip=all&crop=0,36.993699369937,100,38.793879387939" alt="imagem-2">
+                <!--<img src="https://c4.wallpaperflare.com/wallpaper/928/982/439/tv-show-the-office-us-wallpaper-preview.jpg" alt="imagem-3">-->
+                <img src="https://i.pinimg.com/originals/aa/bf/fb/aabffbe251df89bfa1b3d4a03c71008b.jpg" alt="imagem-3">
+            </div>
+            <button class="botaoCarrossel esquerda">❮</button>
+            <button class="botaoCarrossel direita">❯</button>
+        </div>
+
+<!--######################### LINHA DE FILMES ############################################-->
+
         <!-- FILMES -->
         <h1>Filmes</h1>
-        <p> Aproveite para comprar suas bebidas, pipocas, petiscos e doces para saborear enquanto assiste a um filme </p>
+        <p> Descubra os melhores filmes de todos os gêneros e épocas. </p>
         <div class="cards">
             {% for filme in filmes %}
                 <div class="card">
-                    <h2>{{ filme.titulo }}</h2>
+                    <!-- <h2>{{ filme.titulo }}</h2> -->
                     <a href="{{ url_for('descricao_filme', id=filme.id) }}">
                         <img src="{{ filme.poster }}" class="poster" alt="Capa do Filme {{ filme.titulo }}" height="300">
                     </a>
                      <!-- <img src="https://www.cineplayers.com/sites/default/files/posters/2020/08/god.jpg" class="posterFilme" height="300"> -->
+                      <!--
                      <p class="descricao">Ano: {{filme.ano }}</p>
                      <p class="descricao">Gênero: {{ filme.genero }}</p>
                      <p class="descricao">Preço: {{ filme.preco }}</p>
                      <p class="descricao">Diretor: {{ filme.diretor }} </p>
-                     <p class="descricao">Duração: {{ filme.duracao }}</p>
+                     <p class="descricao">Duração: {{ filme.duracao }}</p>-->
                 </div>
             {% endfor %}
         </div>
+
+<!--######################### LINHA DE SÉRIES ############################################-->
         
         <!-- SÉRIES -->
         <h1>Séries</h1>
-        <p> Séries muito, muito, MUITO boas. Que você vai adorar.</p>
+        <p> Encontre as séries mais emocionantes e viciantes para maratonar. </p>
         <div class="cards">
             {% for serie in series %}
                 <div class="card">
-                    <h2>{{ serie.titulo }}</h2>
+                    <!-- <h2>{{ serie.titulo }}</h2> -->
                     <a href="{{ url_for('descricao_serie', id=serie.id) }}">
                         <img src="{{ serie.poster }}" class="poster" alt="Capa da Série {{ serie.titulo }}" height="300">
                     </a>
+                    <!--
                     <p class="descricao">Ano: {{ serie.ano }}</p>
                     <p class="descricao">Gênero: {{ serie.genero }}</p>
                     <p class="descricao">Preço: {{ serie.preco }}</p>
                     <p class="descricao">Temporadas: {{ serie.temporadas}}</p>
                     <p class="descricao">Duração dos Episódios: {{ serie.duracaoEps }}</p>
-                    <p class="descricao">Quantidade de Episodios por Temporada: {{ serie.qntEps }}</p>
+                    <p class="descricao">Quantidade de Episodios por Temporada: {{ serie.qntEps }}</p>-->
                 </div>  
             {% endfor %}
         </div>
 
-
         <br>
         <!-- <img src="https://www.cineplayers.com/sites/default/files/posters/2020/08/god.jpg" class="posterFilme" height="300"> -->
+
+<!--######################### JAVASCRIPT ############################################-->
+
+        <script>
+            let indiceImagemAtual = 0;
+
+            const dentroCarrossel = document.querySelector('.dentroCarrossel'); //Aqui estamos selecionando o elemento que contém todas as imagens
+            const imagens = document.querySelectorAll('.dentroCarrossel img'); //Selecionamos todas as imagens dentro do contêiner. E então retorna uma lista onde cada imagem tem seu próprio índice.
+            const totalImagens = imagens.length; //Usamos o length para obter o número total de imagens e guardamos na variável totalImages.
+
+            let autoSlideIntervalo; ///Variável para armazenar o intervalo automático
+
+            function startAutoSlide() {
+                autoSlideIntervalo = setInterval(() => {
+                    indiceImagemAtual = (indiceImagemAtual < totalImagens - 1) ? indiceImagemAtual + 1 : 0;
+                    updateCarousel();
+                }, 3000)
+            }
+
+            function stopAutoSlide() {
+                clearInterval(autoSlideIntervalo);
+            }
+
+            document.querySelector('.esquerda').addEventListener('click', () => {
+                stopAutoSlide(); ///Pausa a troca automática ao clicar
+                indiceImagemAtual = (indiceImagemAtual > 0) ? indiceImagemAtual - 1 : totalImagens - 1;
+                updateCarousel();
+                startAutoSlide(); ///Reinicia a troca automática após o clique
+            });
+
+            document.querySelector('.direita').addEventListener('click', () => {
+                stopAutoSlide(); ///Pausa a troca automática ao clicar
+                indiceImagemAtual = (indiceImagemAtual < totalImagens - 1) ? indiceImagemAtual + 1 : 0;
+                updateCarousel();
+                startAutoSlide(); ///Reinicia a troca automática após o clique
+            });
+
+            function updateCarousel() {
+                dentroCarrossel.style.transform = `translateX(-${indiceImagemAtual * 100}%)`;
+            }
+
+            /*setInterval(() => { //Alternancia Automatica
+                indiceImagemAtual = (indiceImagemAtual < totalImagens - 1) ? indiceImagemAtual + 1 : 0;
+                updateCarousel();
+            }, 3000);*/
+
+            // Inicia o carrossel automático assim que a página carrega
+            startAutoSlide();  // Inicia a troca automática pela primeira vez
+
+        </script>
 
 </body></html>

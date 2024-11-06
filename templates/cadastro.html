@@ -90,6 +90,8 @@
     .linksMenu{
         text-decoration: none;
         color: white;
+        font-size: small;
+        font-style: lighter;
     }
     .subMenu{
         display:none; 
@@ -111,7 +113,6 @@
     .botaoSelecao{
         background-color: rgb(102, 8, 139);
         border: none;
-        font-weight:lighter;
         /*text-align: center;
         height: 10px;
         border: 3px;
@@ -128,6 +129,12 @@
     }
     .botaoSelecao:hover{
         background-color: rgb(85, 7, 116);
+        /*
+        border: solid;
+        border: 100%;
+        border-color: white;
+        */
+        box-shadow: inset 0 0 0 2px #ffffff;
     }
 
 </style>
@@ -143,7 +150,8 @@
 
         <nav>
             <ul>
-                <li ><img src="https://resizer-acm.eco.astro.com.my/tr:w-640,q:75/https://dj7fdt04hl8tv.cloudfront.net/acm/media/product/netflix/netflix-logo-640x172.png" id="logo" width="60"></li>
+                <!--<li ><img src="https://resizer-acm.eco.astro.com.my/tr:w-640,q:75/https://dj7fdt04hl8tv.cloudfront.net/acm/media/product/netflix/netflix-logo-640x172.png" id="logo" width="60"></li>-->
+                <li><img src="{{ url_for('static', filename='images/sukunaLogo.png') }}" width="90" id="logo" alt="Sukuna logo"></li>
                 <li><a href="/homepage" class="linksMenu">Página Inicial</a></li>
                 <li><a href="/cadastro" class="linksMenu">Cadastro</a></li>
                 <li><input type="text" id="pesquisaSite" placeholder="     Pesquise filme ou série."></li>
