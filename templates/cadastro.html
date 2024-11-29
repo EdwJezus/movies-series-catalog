@@ -93,6 +93,15 @@
         font-size: small;
         font-style: lighter;
     }
+    #statusLoginMenu{
+        text-decoration: none;
+        color: white;
+        font-size: small;
+        font-style: lighter;
+        position: absolute;
+        left: 86%;
+        top: 25%;
+    }
     .subMenu{
         display:none; 
         position: relative;
@@ -154,11 +163,25 @@
                 <li><img src="{{ url_for('static', filename='images/sukunaLogo.png') }}" width="90" id="logo" alt="Sukuna logo"></li>
                 <li><a href="/homepage" class="linksMenu">Página Inicial</a></li>
                 <li><a href="/cadastro" class="linksMenu">Cadastro</a></li>
+                <li><a href="/filmes" class="linksMenu">Filmes</a></li>
+                <li><a href="/series" class="linksMenu">Séries</a></li>
+                <li>
+                {% if usuario_atual %}
+                    <p id="statusLoginMenu">Bem-vindo, {{ usuario_atual.usuario }}!</p>
+                {% else %}
+                    <p id="statusLoginMenu">Você não está logado.</p>
+                {% endif %}
+                </li>
                 <li><input type="text" id="pesquisaSite" placeholder="     Pesquise filme ou série."></li>
             </ul>
         </nav>
 
 <!--##################### MENU PARA SELECIONAR CADASTRO ESPECIFICO #######################-->
+
+        <a href="/ver_registros/filmes" class="botaoSelecao">Ver registros filmes</a>
+        <a href="/ver_registros/series" class="botaoSelecao">Ver registros séries</a>
+        <a href="/ver_registros/diretores" class="botaoSelecao">Ver registros diretores</a>
+        <a href="/ver_registros/generos" class="botaoSelecao">Ver registros generos</a>
 
         <div id="menuSelecao">
                 <button onclick="mostrarForm('cadastroFilme')" class="botaoSelecao">Cadastrar Filme</button>
@@ -327,6 +350,18 @@
 
             if (msgFilmeCadastrado){
                 alert(msgFilmeCadastrado);
+            }
+
+            var msgDiretorCadastrado = "{{ msgDiretorCadastrado }}"
+
+            if (msgDiretorCadastrado){
+                alert(msgDiretorCadastrado);
+            }
+
+            var msgGeneroCadastrado = "{{ msgGeneroCadastrado }}"
+
+            if (msgGeneroCadastrado){
+                alert(msgGeneroCadastrado);
             }
 
 /////////////////////////MENU PARA SELECIONAR CADASTRO ESPECIFICO

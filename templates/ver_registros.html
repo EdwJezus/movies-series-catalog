@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+    <title>Ver Registros - {{ tabela }}</title>
+</head>
+<body>
+    <h1>Registros da Tabela: {{ tabela }}</h1>
+    <table border="1">
+        <tr>
+            {% for coluna in colunas %}
+            <th>{{ coluna }}</th>
+            {% endfor %}
+            <th>Ações</th>
+        </tr>
+        {% for registro in registros %}
+        <tr>
+            {% for dado in registro %}
+            <td>{{ dado }}</td>
+            {% endfor %}
+            <td>
+                <a href="/editar/{{ tabela }}/{{ registro[0] }}">Editar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

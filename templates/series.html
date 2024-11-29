@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+
+<style>
+    html{
+        /*font-family: Verdana, Geneva, Tahoma, sans-serif;*/
+        font-family: 'Roboto', sans-serif;
+        /*background-color: rgb(39, 37, 39);*/
+        /*background-color: rgb(23, 19, 49);*/
+        /*background-image: linear-gradient(to bottom right, black, purple);*/
+        background-image: linear-gradient(to bottom right, black, rgb(66, 2, 93));
+        background-size: 100% 100%;
+        background-position: center;
+        background-attachment: fixed;
+        /*margin: 20px;*/
+        color: rgb(187, 110, 255); /*text*/
+    }
+    body{
+        margin: 20px;
+        margin-top: 90px;
+    }
+    h1{
+        text-shadow: 0px 0px 10px rgb(104, 29, 168);
+    }
+    h2{
+        text-shadow: 0px 0px 10px rgb(104, 29, 168);
+    }
+    p{
+        text-shadow: 0px 0px 10px rgb(104, 29, 168);
+    }
+    .poster{
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgb(104, 29, 168);
+        max-width: 100%;
+        /*height: auto;*/
+        height: 300px;
+        width: 300px;
+    }
+    .cards{
+        display: flex; 
+        flex-wrap: wrap; /* Permite que os filmes "quebrem" para uma nova linha se a tela for pequena */
+        /*justify-content: space-around; /* Espaça os filmes uniformemente */
+        gap: 20px; /* Espaço entre os filmes */
+    }
+    .card{
+        width: 200px; /* Largura de cada card de filme */
+        /* background-color: white; */
+        border: 3px;
+        border-style: solid;
+        border-color: rgb(104, 29, 168);
+        padding: 2px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /*text-align:justify;*/
+    }
+    .card:hover{
+        border-color: white;
+    }
+    .descricao{
+        font-size: smaller;
+    }
+    nav{
+        background-color: rgb(102, 8, 139);
+        padding: 10px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10;
+    }
+    li{
+        display: inline-block;
+        margin-right: 30px;
+    }
+    .linksMenu{
+        text-decoration: none;
+        color: white;
+        font-size: small;
+        font-style: lighter;
+    }
+    #statusLoginMenu{
+        text-decoration: none;
+        color: white;
+        font-size: small;
+        font-style: lighter;
+        position: absolute;
+        left: 86%;
+        top: 25%;
+    }
+    #pesquisaSite{
+        position: absolute;
+        border-radius: 20px;
+        background-color: rgb(74, 7, 100);
+        border-style: solid;
+        border-color:aliceblue;
+        color: white;
+        height: 30px;
+        width: 20%;
+        left: 40%;
+        top: 25%;
+    }
+
+    /*########### CSS CARROSSEL #############*/
+
+    .carrossel{
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 10px;
+    }
+    .dentroCarrossel{
+        display: flex;
+        transition: transform 0.5s ease;
+    }
+    .dentroCarrossel img{
+
+        width: 100%;
+        min-width: 100%;
+        height: 600px;
+        object-fit: cover;
+        object-position: 100% 30%;
+    }
+    .botaoCarrossel{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 13px;
+        padding-left: 20px;
+        padding-right: 20px;
+        cursor: pointer;
+        font-size: 18px;
+        border-radius: 50%;
+    }
+    .botaoCarrossel.esquerda{
+        left: 10px;
+    }
+    .botaoCarrossel.direita{
+        right: 10px;
+    }
+    .botaoCarrossel:hover{
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+    
+</style>
+
+<title>Filmes</title>
+</head>
+<body>	
+
+        <!-- http://127.0.0.1:5000/filmes -->
+
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!--######################### BARRA DE NAVEGAÇÃO ############################################-->
+
+    <nav>
+        <ul>
+            <!--<li ><img src="https://resizer-acm.eco.astro.com.my/tr:w-640,q:75/https://dj7fdt04hl8tv.cloudfront.net/acm/media/product/netflix/netflix-logo-640x172.png" id="logo" width="60"></li>-->
+            <li><img src="{{ url_for('static', filename='images/sukunaLogo.png') }}" width="90" id="logo" alt="Sukuna logo"></li>
+            <li><a href="/homepage" class="linksMenu">Página Inicial</a></li>
+            <li><a href="/cadastro" class="linksMenu">Cadastro</a></li>
+            <li><a href="/filmes" class="linksMenu">Filmes</a></li>
+            <li><a href="/series" class="linksMenu">Séries</a></li>
+            <li>
+                {% if usuario_atual %}
+                    <p id="statusLoginMenu">Bem-vindo, {{ usuario_atual.usuario }}!</p>
+                {% else %}
+                    <p id="statusLoginMenu">Você não está logado.</p>
+                {% endif %}
+            </li>
+            <li><input type="text" id="pesquisaSite" placeholder="     Pesquise filme ou série."></li>
+        </ul>
+    </nav>
+
+
+<!--######################### LINHA DE SÉRIES ############################################-->
+        
+        <!-- SÉRIES -->
+        <h1>Séries</h1>
+        <p> Encontre as séries mais emocionantes e viciantes para maratonar. </p>
+        <div class="cards">
+            {% for serie in series %}
+                <div class="card">
+                    <!-- <h2>{{ serie.titulo }}</h2> -->
+                    <a href="{{ url_for('descricao_serie', id=serie.id) }}">
+                        <img src="{{ serie.poster }}" class="poster" alt="Capa da Série {{ serie.titulo }}" height="300">
+                    </a>
+                    <!--
+                    <p class="descricao">Ano: {{ serie.ano }}</p>
+                    <p class="descricao">Gênero: {{ serie.genero }}</p>
+                    <p class="descricao">Preço: {{ serie.preco }}</p>
+                    <p class="descricao">Temporadas: {{ serie.temporadas}}</p>
+                    <p class="descricao">Duração dos Episódios: {{ serie.duracaoEps }}</p>
+                    <p class="descricao">Quantidade de Episodios por Temporada: {{ serie.qntEps }}</p>-->
+                </div>  
+            {% endfor %}
+        </div>
+
+
+
+</body></html>

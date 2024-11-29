@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+    <title>Editar Registro - {{ tabela }}</title>
+</head>
+<body>
+    <h1>Editar Registro na Tabela: {{ tabela }}</h1>
+    <form action="" method="POST">
+        {% for i in range(1, colunas|length) %} <!-- Ignorar o ID (coluna 0) -->
+        <label for="{{ colunas[i] }}">{{ colunas[i] }}</label>
+        <input type="text" name="{{ colunas[i] }}" id="{{ colunas[i] }}" value="{{ registro[i] }}" required><br>
+        {% endfor %}
+        <button type="submit">Salvar</button>
+    </form>
+</body>
+</html>

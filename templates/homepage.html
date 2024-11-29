@@ -15,10 +15,15 @@
         background-attachment: fixed;
         /*margin: 20px;*/
         color: rgb(187, 110, 255); /*text*/
+        margin: 0;
+        padding: 0;
+        height: 100%;
     }
     body{
         margin: 20px;
         margin-top: 90px;
+        padding: 0;
+        height: 100%;
     }
     h1{
         text-shadow: 0px 0px 10px rgb(104, 29, 168);
@@ -79,6 +84,15 @@
         font-size: small;
         font-style: lighter;
     }
+    #statusLoginMenu{
+        text-decoration: none;
+        color: white;
+        font-size: small;
+        font-style: lighter;
+        position: absolute;
+        left: 86%;
+        top: 25%;
+    }
     #pesquisaSite{
         position: absolute;
         border-radius: 20px;
@@ -95,12 +109,12 @@
     /*########### CSS CARROSSEL #############*/
 
     .carrossel{
-    position: relative;
-    width: 100%;
-    max-width: 100%;
-    margin: auto;
-    overflow: hidden;
-    border-radius: 10px;
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        margin: auto;
+        overflow: hidden;
+        border-radius: 10px;
     }
     .dentroCarrossel{
         display: flex;
@@ -137,6 +151,10 @@
     .botaoCarrossel:hover{
         background-color: rgba(0, 0, 0, 0.8);
     }
+    #playIcon{
+        position: relative;
+        top: 120px;
+    }
     
 </style>
 
@@ -147,7 +165,7 @@
 
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-<!--######################### LINHA DE FILMES ############################################-->
+<!--######################### BARRA DE NAVEGAÇÃO ############################################-->
 
         <nav>
             <ul>
@@ -155,6 +173,16 @@
                 <li><img src="{{ url_for('static', filename='images/sukunaLogo.png') }}" width="90" id="logo" alt="Sukuna logo"></li>
                 <li><a href="/homepage" class="linksMenu">Página Inicial</a></li>
                 <li><a href="/cadastro" class="linksMenu">Cadastro</a></li>
+                <li><a href="/filmes" class="linksMenu">Filmes</a></li>
+                <li><a href="/series" class="linksMenu">Séries</a></li>
+                <li>
+                {% if usuario_atual %}
+                    <p id="statusLoginMenu">Bem-vindo, {{ usuario_atual.usuario }}!</p>
+                {% else %}
+                    <p id="statusLoginMenu">Você não está logado.</p>
+                {% endif %}
+                </li>
+                <!--<li> {{ usuario_atual.usuario }}</li>-->
                 <li><input type="text" id="pesquisaSite" placeholder="     Pesquise filme ou série."></li>
             </ul>
         </nav>
@@ -185,21 +213,25 @@
         <h1>Filmes</h1>
         <p> Descubra os melhores filmes de todos os gêneros e épocas. </p>
         <div class="cards">
-            {% for filme in filmes %}
-                <div class="card">
-                    <!-- <h2>{{ filme.titulo }}</h2> -->
-                    <a href="{{ url_for('descricao_filme', id=filme.id) }}">
-                        <img src="{{ filme.poster }}" class="poster" alt="Capa do Filme {{ filme.titulo }}" height="300">
-                    </a>
-                     <!-- <img src="https://www.cineplayers.com/sites/default/files/posters/2020/08/god.jpg" class="posterFilme" height="300"> -->
-                      <!--
-                     <p class="descricao">Ano: {{filme.ano }}</p>
-                     <p class="descricao">Gênero: {{ filme.genero }}</p>
-                     <p class="descricao">Preço: {{ filme.preco }}</p>
-                     <p class="descricao">Diretor: {{ filme.diretor }} </p>
-                     <p class="descricao">Duração: {{ filme.duracao }}</p>-->
-                </div>
-            {% endfor %}
+                {% for filme in filmes[:6] %} <!-- [:6] Indica para limitar o for até o sexto elemento -->
+                    <div class="card">
+                        <!-- <h2>{{ filme.titulo }}</h2> -->
+                        <a href="{{ url_for('descricao_filme', id=filme.id) }}">
+                            <img src="{{ filme.poster }}" class="poster" alt="Capa do Filme {{ filme.titulo }}" height="300">
+                        </a>
+                        <!-- <img src="https://www.cineplayers.com/sites/default/files/posters/2020/08/god.jpg" class="posterFilme" height="300"> -->
+                        <!--
+                        <p class="descricao">Ano: {{filme.ano }}</p>
+                        <p class="descricao">Gênero: {{ filme.genero }}</p>
+                        <p class="descricao">Preço: {{ filme.preco }}</p>
+                        <p class="descricao">Diretor: {{ filme.diretor }} </p>
+                        <p class="descricao">Duração: {{ filme.duracao }}</p>-->
+                        
+                    </div>
+                {% endfor %}
+                <a href="/filmes">
+                    <img src="static/images/moreActionsIcon.png" width="70" height="70" id="playIcon">
+                </a>
         </div>
 
 <!--######################### LINHA DE SÉRIES ############################################-->
@@ -223,10 +255,54 @@
                     <p class="descricao">Quantidade de Episodios por Temporada: {{ serie.qntEps }}</p>-->
                 </div>  
             {% endfor %}
+            <a href="/series">
+                <img src="static/images/moreActionsIcon.png" width="70" height="70" id="playIcon">
+            </a>
         </div>
 
         <br>
         <!-- <img src="https://www.cineplayers.com/sites/default/files/posters/2020/08/god.jpg" class="posterFilme" height="300"> -->
+
+<!--######################### LINHA DE DIRETORES ############################################-->
+
+        <!-- DIRETORES -->
+        <h1>Diretores</h1>
+        <p> Conheça os diretores mais incríveis da história.</p>
+        <div class="cards">
+            {% for diretor in diretores %}
+                <div class="card">
+                    <p class="descricao">Nome: {{ diretor.nome }}</p>
+                    <p class="descricao">Idade: {{ diretor.idade }}</p>
+                    <p class="descricao">Nacionalidade: {{ diretor.nacionalidade }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+<!--######################### LINHA DE DIRETORES ############################################-->
+
+        <!-- GENEROS -->
+         <h1>Gêneros</h1>
+         <p> Descubra os gêneros mais divertidos do cinema e tv.</p>
+         <div class="cards">
+            {% for genero in generos %}
+                <div class="card">
+                    <p class="descricao">Nome: {{ genero.name }}</p>
+                    <p class="descricao">Informações: {{ genero.info }}</p>
+                </div>
+            {% endfor %}
+         </div>
+
+<!--######################### MENSAGEM LOGADO COM SUCESSO ############################################-->
+
+         {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li class="alert alert-{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
 
 <!--######################### JAVASCRIPT ############################################-->
 

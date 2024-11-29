@@ -32,6 +32,15 @@
         font-size: small;
         font-style: lighter;
     }
+    #statusLoginMenu{
+        text-decoration: none;
+        color: white;
+        font-size: small;
+        font-style: lighter;
+        position: absolute;
+        left: 86%;
+        top: 25%;
+    }
     li{
         display: inline-block;
         margin-right: 30px;
@@ -85,6 +94,26 @@
     .descricaoProjeto{
         margin-left: 2%;
     }
+    #botaoPlay{
+        position:absolute;
+        font-weight: bold;
+        left: 18%;
+        top: 93%;
+        z-index: 9;
+        font-size: 100%;
+        padding: 1%;
+        padding-inline: 2%;
+        border-radius: 20px;
+        background-color: rgb(187, 110, 255);
+    }
+    #botaoPlayAlt{
+        position:absolute;
+        font-weight: bold;
+        left: 18%;
+        top: 88%;
+        z-index: 9;
+        font-size: 100%;
+    }
 
 
 </style>
@@ -104,6 +133,15 @@
                 <li><img src="{{ url_for('static', filename='images/sukunaLogo.png') }}" width="90" id="logo" alt="Sukuna logo"></li>
                 <li><a href="/homepage" class="linksMenu">Página Inicial</a></li>
                 <li><a href="/cadastro" class="linksMenu">Cadastro</a></li>
+                <li><a href="/filmes" class="linksMenu">Filmes</a></li>
+                <li><a href="/series" class="linksMenu">Séries</a></li>
+                <li>
+                    {% if usuario_atual %}
+                        <p id="statusLoginMenu">Bem-vindo, {{ usuario_atual.usuario }}!</p>
+                    {% else %}
+                        <p id="statusLoginMenu">Você não está logado.</p>
+                    {% endif %}
+                </li>
                 <li><input type="text" id="pesquisaSite" placeholder="     Pesquise filme ou série."></li>
             </ul>
         </nav>
@@ -119,6 +157,13 @@
                         <img src="{{ filme.background }}" id="wallpaper">
                         <img src="{{ filme.poster }}" class="poster" alt="Capa do Filme {{ filme.titulo }}" height="300">
                         <!--<img src="https://m.media-amazon.com/images/M/MV5BYTJkNGQyZDgtZDQ0NC00MDM0LWEzZWQtYzUzZDEwMDljZWNjXkEyXkFqcGc@._V1_.jpg" class="posterFilme" alt="Capa do Filme {{ filme.titulo }}" height="300">-->
+
+                        <!--<a href="/player" id="botaoPlay">Player</a>-->
+                        <a href="/player" id="botaoPlayAlt">
+                            <img src="{{ url_for('static', filename='images/playIcon.png') }}" width="80" alt="Play Icon">
+                        </a>
+                        
+                        <!--<button id="botaoPlay">Player</button>-->
                     </div>
 
                     <div class="descricaoProjeto">
@@ -159,5 +204,7 @@
                 </div>
             {% endif %}
         </div>
+
+    <iframe src="https://www.youtube.com/embed/mqqft2x_Aa4" frameborder="0" height="100%" width="100%"></iframe>
 
 </body></html>
