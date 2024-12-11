@@ -2,16 +2,158 @@
 <html lang="pt-br">
 <head>
 <meta charset="utf-8">
+<style>
+    html{
+        font-family: 'Roboto', sans-serif;
+        background-image: linear-gradient(to bottom right, black, purple);
+        background-size: 100% 100%;
+        background-position: center;
+        background-attachment: fixed;
+        color: rgb(187, 110, 255);
+        width: 100%;
+        height: 100%;
+    }
+    body{
+        margin: 20px;
+        margin-top: 90px;
+        width: 100%;
+        height: 100%;
+    }
+    h1{
+        text-shadow: 0px 0px 10px rgb(104, 29, 168);
+    }
+    /* BARRA DE NAVEGAÇÃO */
+    nav{
+        background-color: rgb(102, 8, 139);
+        padding: 10px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10;
+    }
+    li{
+        display: inline-block;
+        margin-right: 30px;
+    }
+    .linksMenu{
+        text-decoration: none;
+        color: white;
+        font-size: small;
+        font-style: lighter;
+    }
+    #statusLoginMenu{
+        text-decoration: none;
+        color: white;
+        font-size: small;
+        font-style: lighter;
+        position: absolute;
+        left: 86%;
+        top: 42%;
+    }
+    #pesquisaSite{
+        position: absolute;
+        padding-left: 1%;
+        border-radius: 20px;
+        background-color: rgb(74, 7, 100);
+        border-style: solid;
+        border-color:aliceblue;
+        color: white;
+        height: 30px;
+        width: 20%;
+        left: 40%;
+        top: 25%;
+    }
+    #inputDado{
+        font-size: 150%;
+        padding: 15px;
+        margin: 1%;
+        border-radius: 15px;
+        border-style: none;
+        background-color: rgba(90, 48, 107, 0.8);
+        color: white;
+    }
+    button{
+        color: rgb(237, 217, 241);
+        background-color: rgba(145, 80, 170, 0.8);
+        font-size: 140%;
+        margin-left: 27%;
+        padding: 15px;
+        padding-inline: 50px;
+        border-radius: 15px;
+        border-style: none;
+        border-color: white;
+        position: relative;
+        left: -300px;
+        cursor: pointer;
+    }
+    label{
+        margin-left: 1%;
+        font-size: 140%;
+    }
+    #blocoInputs{
+        margin-top: 120px;
+    }
+    #tudo{
+        padding-bottom: 100px;
+    }
+</style>
     <title>Editar Registro - {{ tabela }}</title>
 </head>
+
 <body>
-    <h1>Editar Registro na Tabela: {{ tabela }}</h1>
-    <form action="" method="POST">
-        {% for i in range(1, colunas|length) %} <!-- Ignorar o ID (coluna 0) -->
-        <label for="{{ colunas[i] }}">{{ colunas[i] }}</label>
-        <input type="text" name="{{ colunas[i] }}" id="{{ colunas[i] }}" value="{{ registro[i] }}" required><br>
-        {% endfor %}
-        <button type="submit">Salvar</button>
-    </form>
+    <!--######################### BARRA DE NAVEGAÇÃO ############################################-->
+
+    <nav>
+        <ul>
+            <li><img src="{{ url_for('static', filename='images/sukunaLogo.png') }}" width="90" id="logo" alt="Sukuna logo"></li>
+            <li><a href="/homepage" class="linksMenu">Página Inicial</a></li>
+            <li><a href="/cadastro" class="linksMenu">Cadastro</a></li>
+            <li><a href="/filmes" class="linksMenu">Filmes</a></li>
+            <li><a href="/series" class="linksMenu">Séries</a></li>
+            <li>
+            {% if usuario_atual %}
+                <a href="/perfil" id="statusLoginMenu">Bem-vindo, {{ usuario_atual.usuario }}!</a>
+            {% else %}
+                <a href="/login" id="statusLoginMenu">Você não está logado.</a>
+            {% endif %}
+            </li>
+            <li><input type="text" id="pesquisaSite" placeholder="Pesquise filme ou série." value="{{ request.args.get('termo', '') }}">
+            </li>
+        </ul>
+    </nav>
+
+    <!-- ############################ FORMS PARA EDITAR DADOS JÁ CADASTRADOS NO BANCO ##################### -->
+
+    <div id="tudo">
+        <div id="blocoInputs">
+            <h1>Editar Registro na Tabela: {{ tabela }}</h1>
+            <form action="" method="POST">
+                {% for i in range(1, colunas|length) %}
+                <div class="form-group">
+                    <label for="{{ colunas[i] }}">{{ colunas[i] }}</label>
+                    <br>
+                    <input type="text" name="{{ colunas[i] }}" id="inputDado" value="{{ registro[i] }}" required>
+                </div>
+                {% endfor %}
+                <button type="submit">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+<!--#################### JAVASCRIPT #####################################################-->
+
+    <script>
+        /////////////////////////////Barra de Pesquisa
+        document.getElementById('pesquisaSite').addEventListener('keydown', function (event) {
+            const termo = this.value.trim().toLowerCase();
+
+            //Verifica se a tecla pressionada foi Enter
+            if (event.key === 'Enter' && termo) {
+                //Redireciona pra pagina de resultados com o termo da busca como parametro na URL
+                window.location.href = `/resultados?termo=${encodeURIComponent(termo)}`;
+            }
+        });
+    </script>
 </body>
 </html>

@@ -2,23 +2,22 @@
 <html lang="pt-br">
 <head>
 <meta charset="utf-8">
-
 <style>
-
     html{
-        /*font-family: Verdana, Geneva, Tahoma, sans-serif;*/
         font-family: 'Roboto', sans-serif;
         background-image: linear-gradient(to bottom right, black, purple);
         background-size: 100% 100%;
         background-position: center;
         background-attachment: fixed;
-        /*background-color: rgb(39, 37, 39);*/
-        /*background-color: rgb(23, 19, 49);*/
         color: rgb(187, 110, 255);
+        height: 100%;
+        width: 100%;
+        overflow-x: hidden;
     }
     body{
         margin: 20px;
         margin-top: 90px;
+        height: 100%;
     }
     nav{
         background-color: rgb(102, 8, 139);
@@ -35,6 +34,7 @@
     }
     #pesquisaSite{
         position: absolute;
+        padding-left: 1%;
         border-radius: 20px;
         background-color: rgb(74, 7, 100);
         border-style: solid;
@@ -69,19 +69,22 @@
         border-radius: 5px;
         color: white;
     }
+    .inputSelect{
+        background-color: rgb(19, 19, 19);
+        border-style:double;
+        box-shadow: 0px 0px 10px rgba(103, 29, 168, 0.529);
+        border-radius: 5px;
+        color: white;
+        padding: 1%;
+        padding-inline: 16px;
+        font-size:medium;
+    }
     .fieldsetSubMenu{
         border-radius: 10px;
         border-color: #884dd0;
         height: 20%;
         width: 35%;
-        /*
-        height: 463px;
-        width: 500px;
-        margin: 40px;
-        margin-left: 90px;
-        margin-right: 90px;*/
         background-color: rgba(46, 37, 50, 0.412);
-        /*background-color: rgb(46, 37, 50);*/
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -106,12 +109,12 @@
         display:none; 
         position: relative;
         left: 30%;
-        top: 30%;
+        top: 100px;
     }
     #menuSelecao{
         position: relative;
         left: 10%;
-        top: 40%;
+        top: 100px;
         width: 80%;
         border: 3px;
         border-style: solid;
@@ -122,12 +125,6 @@
     .botaoSelecao{
         background-color: rgb(102, 8, 139);
         border: none;
-        /*text-align: center;
-        height: 10px;
-        border: 3px;
-        border-style: solid;
-        border-color: white;
-        */
         border-radius: 10px;
         color: white;
         padding: 2.3% 4%;
@@ -138,28 +135,40 @@
     }
     .botaoSelecao:hover{
         background-color: rgb(85, 7, 116);
-        /*
-        border: solid;
-        border: 100%;
-        border-color: white;
-        */
         box-shadow: inset 0 0 0 2px #ffffff;
     }
-
+    #menuRegistros{
+        position: relative;
+        top: 40px;
+        left: 15%;
+    }
+    .botaoSelecaoRegistro{
+        background-color: rgb(227, 227, 227);
+        border: none;
+        text-decoration: none;
+        white-space: nowrap;
+        border-radius: 10px;
+        color: rgb(72, 7, 98);
+        padding: 1.5% 2%;
+        font-size: 100%;
+        margin-left: 3%;
+        cursor: pointer;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.274);
+    }
+    #tudo{
+        padding-bottom: 100px;
+    }
 </style>
 
 <title>Cadastro de Informações</title>
 </head>
 <body>	
-        <!-- http://127.0.0.1:5000/cadastro -->
-
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
 <!--##################### BARRA DE NAVEGACAO #######################-->
 
         <nav>
             <ul>
-                <!--<li ><img src="https://resizer-acm.eco.astro.com.my/tr:w-640,q:75/https://dj7fdt04hl8tv.cloudfront.net/acm/media/product/netflix/netflix-logo-640x172.png" id="logo" width="60"></li>-->
                 <li><img src="{{ url_for('static', filename='images/sukunaLogo.png') }}" width="90" id="logo" alt="Sukuna logo"></li>
                 <li><a href="/homepage" class="linksMenu">Página Inicial</a></li>
                 <li><a href="/cadastro" class="linksMenu">Cadastro</a></li>
@@ -178,10 +187,13 @@
 
 <!--##################### MENU PARA SELECIONAR CADASTRO ESPECIFICO #######################-->
 
-        <a href="/ver_registros/filmes" class="botaoSelecao">Ver registros filmes</a>
-        <a href="/ver_registros/series" class="botaoSelecao">Ver registros séries</a>
-        <a href="/ver_registros/diretores" class="botaoSelecao">Ver registros diretores</a>
-        <a href="/ver_registros/generos" class="botaoSelecao">Ver registros generos</a>
+    <div id="tudo">
+        <div id="menuRegistros">
+            <a href="/ver_registros/filmes" class="botaoSelecaoRegistro">Ver registros filmes</a>
+            <a href="/ver_registros/series" class="botaoSelecaoRegistro">Ver registros séries</a>
+            <a href="/ver_registros/diretores" class="botaoSelecaoRegistro">Ver registros diretores</a>
+            <a href="/ver_registros/generos" class="botaoSelecaoRegistro">Ver registros gêneros</a>
+        </div>
 
         <div id="menuSelecao">
                 <button onclick="mostrarForm('cadastroFilme')" class="botaoSelecao">Cadastrar Filme</button>
@@ -216,15 +228,27 @@
                     <br>
 
                     Gênero:<br>
-                    <input type="text" class="inputText" name="genero" required>
+                    <select class="inputSelect" name="genero" required>
+                        {% for genero in generos %}
+                            <option value="{{ genero.name }}">{{ genero.name }}</option>
+                        {% endfor %}
+                    </select>
                     <br>
 
-                    Preço:<br>
-                    <input type="text" class="inputText" name="preco" required>
+                    Sinopse:<br>
+                    <textarea class="inputText" name="sinopse" rows="10" cols="20" required></textarea>
                     <br>
 
                     Diretor:<br>
-                    <input type="text" class="inputText" name="diretor" required>
+                    <select class="inputSelect" name="diretor" required>
+                        {% for diretor in diretores %}
+                            <option value="{{ diretor.nome }}">{{ diretor.nome }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+
+                    URL do vídeo:<br>
+                    <input type="text" class="inputText" name="video" required>
                     <br>
 
                     Duração:<br>
@@ -262,11 +286,19 @@
                     <br>
                     
                     Gênero:<br>
-                    <input type="text" class="inputText" name="genero" required>
+                    <select class="inputSelect" name="genero" required>
+                        {% for genero in generos %}
+                            <option value="{{ genero.name }}">{{ genero.name }}</option>
+                        {% endfor %}
+                    </select>
                     <br>
 
-                    Preço:<br>
-                    <input type="text" class="inputText" name="preco" required>
+                    Sinopse:<br>
+                    <textarea class="inputText" name="sinopse" rows="10" cols="20" required></textarea>
+                    <br>
+
+                    URL do vídeo:<br>
+                    <input type="text" class="inputText" name="video" required>
                     <br>
 
                     Temporadas:<br>
@@ -333,13 +365,12 @@
                 </fieldset>
             </form>
         </div>
+    </div>
 
-
-<!--########################################################-->
 <!--##################### JAVASCRIPT #######################-->
 
-
         <script>
+            //Códigos para receber mensagens de sucesso ou fracasso no cadastro
             var msgSerieCadastrada = "{{ msgSerieCadastrada }}"; //Pega do python
 
             if (msgSerieCadastrada) {
@@ -366,16 +397,25 @@
 
 /////////////////////////MENU PARA SELECIONAR CADASTRO ESPECIFICO
             
-            // Função para mostrar o submenu/formulário correspondente
+            //Função para mostrar o submenu/formulário correspondente
             function mostrarForm(idFormulario){
-                // Primeiro, esconde todos os submenus
+                //Primeiro esconde todos os submenus
                 const submenus = document.querySelectorAll('.subMenu')
                 submenus.forEach(subMenu => subMenu.style.display = 'none')
 
-                // Mostra o submenu/formulário selecionado
+                //Mostra o submenu/formulário selecionado
                 document.getElementById(idFormulario).style.display = 'block';
             }
 
-        </script>
+            /////////////////////////////Barra de Pesquisa
+            document.getElementById('pesquisaSite').addEventListener('keydown', function (event) {
+                const termo = this.value.trim().toLowerCase();
 
+                //Verifica se a tecla pressionada foi Enter
+                if (event.key === 'Enter' && termo) {
+                    //Redireciona pra pagina de resultados com o termo da busca como parametro na URL
+                    window.location.href = `/resultados?termo=${encodeURIComponent(termo)}`;
+                }
+            });
+        </script>
 </body></html>

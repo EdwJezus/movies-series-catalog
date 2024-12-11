@@ -15,10 +15,25 @@
         border: none;
     }
 </style>
-<title>Reprodutor</title>
+<title>
+    {% if filme %}
+        Assistir {{ filme.titulo }}
+    {% endif %}
+
+    {% if serie %}
+        Assistir {{ serie.titulo }}
+    {% endif %}
+</title>
 </head>
 <body>
+    <!-- Diferencia de file ou série para saber de onde pegar o ID -->
 
-    <iframe src="https://www.youtube.com/embed/mqqft2x_Aa4" id="player" frameborder="0" allowfullscreen></iframe>
+    {% if filme %}
+        <iframe src="{{ filme.video }}" id="player" frameborder="0" allowfullscreen></iframe>
+    {% endif %}
+
+    {% if serie %}
+        <iframe src="{{ serie.video }}" id="player" frameborder="0" allowfullscreen></iframe>
+    {% endif %}
 
 </body></html>

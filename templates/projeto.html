@@ -4,15 +4,12 @@
 <meta charset="utf-8">
 <style>
     html{
-        /*font-family: Verdana, Geneva, Tahoma, sans-serif;*/
         font-family: 'Roboto', sans-serif;
         background-image: linear-gradient(to bottom right, black, purple);
         background-size: 100% 100%;
         background-position: center;
         background-attachment: fixed;
-        /*background-color: rgb(39, 37, 39);*/
-        /*background-color: rgb(23, 19, 49);*/
-        color: rgb(187, 110, 255); /*text*/
+        color: rgb(187, 110, 255);
     }
     body{
         margin: 20px;
@@ -39,7 +36,7 @@
         font-style: lighter;
         position: absolute;
         left: 86%;
-        top: 25%;
+        top: 42%;
     }
     li{
         display: inline-block;
@@ -47,18 +44,9 @@
     }
     .container{
         position: relative;
-        /*width: 680px;  Defina o tamanho do contêiner 
-        height: 300px*/
         
     }
     #wallpaper{
-        /*
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgb(104, 29, 168);
-        left: 0;
-        top: 0;
-        width: 80%;
-        */
         border-radius: 10px;
         box-shadow: 0px 0px 10px rgb(104, 29, 168);
         left: 0;
@@ -81,6 +69,7 @@
     }
     #pesquisaSite{
         position: absolute;
+        padding-left: 1%;
         border-radius: 20px;
         background-color: rgb(74, 7, 100);
         border-style: solid;
@@ -106,7 +95,7 @@
         border-radius: 20px;
         background-color: rgb(187, 110, 255);
     }
-    #botaoPlayAlt{
+    #botaoPlayAltFilme{
         position:absolute;
         font-weight: bold;
         left: 18%;
@@ -114,38 +103,51 @@
         z-index: 9;
         font-size: 100%;
     }
-
-
+    #botaoPlayAltSerie{
+        position:absolute;
+        font-weight: bold;
+        left: 18%;
+        top: 76%;
+        z-index: 9;
+        font-size: 100%;
+    }
 </style>
 
-<title>Projeto</title>
+<title>
+    {% if filme %}
+        {{ filme.titulo }}
+    {% endif %}
+
+    {% if serie %}
+        {{ serie.titulo }}
+    {% endif %}
+</title>
 </head>
 <body>
-        <!-- http://127.0.0.1:5000/homepage -->
-
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
 <!--##################### BARRA DE NAVEGAÇÃO #######################-->
 
         <nav>
             <ul>
-                <!--<li ><img src="https://resizer-acm.eco.astro.com.my/tr:w-640,q:75/https://dj7fdt04hl8tv.cloudfront.net/acm/media/product/netflix/netflix-logo-640x172.png" id="logo" width="60"></li>-->
                 <li><img src="{{ url_for('static', filename='images/sukunaLogo.png') }}" width="90" id="logo" alt="Sukuna logo"></li>
                 <li><a href="/homepage" class="linksMenu">Página Inicial</a></li>
                 <li><a href="/cadastro" class="linksMenu">Cadastro</a></li>
                 <li><a href="/filmes" class="linksMenu">Filmes</a></li>
                 <li><a href="/series" class="linksMenu">Séries</a></li>
                 <li>
-                    {% if usuario_atual %}
-                        <p id="statusLoginMenu">Bem-vindo, {{ usuario_atual.usuario }}!</p>
-                    {% else %}
-                        <p id="statusLoginMenu">Você não está logado.</p>
-                    {% endif %}
+                {% if usuario_atual %}
+                    <a href="/perfil" id="statusLoginMenu">Bem-vindo, {{ usuario_atual.usuario }}!</a>
+                {% else %}
+                    <a href="/login" id="statusLoginMenu">Você não está logado.</a>
+                {% endif %}
                 </li>
-                <li><input type="text" id="pesquisaSite" placeholder="     Pesquise filme ou série."></li>
+                <li><input type="text" id="pesquisaSite" placeholder="Pesquise filme ou série." value="{{ request.args.get('termo', '') }}">
+                </li>
             </ul>
         </nav>
 
+<!-- Reutilizei os cards da homepage com algumas modificações -->
 <!--##################### CARDS FILMES #######################-->
 
         <div class="cards">
@@ -153,26 +155,19 @@
                 <div class="card">
 
                     <div class="container">
-                        <!--<img src="https://wallpapercat.com/w/full/9/a/d/174418-1920x1080-desktop-full-hd-the-godfather-wallpaper.jpg" id="wallpaper">-->
                         <img src="{{ filme.background }}" id="wallpaper">
                         <img src="{{ filme.poster }}" class="poster" alt="Capa do Filme {{ filme.titulo }}" height="300">
-                        <!--<img src="https://m.media-amazon.com/images/M/MV5BYTJkNGQyZDgtZDQ0NC00MDM0LWEzZWQtYzUzZDEwMDljZWNjXkEyXkFqcGc@._V1_.jpg" class="posterFilme" alt="Capa do Filme {{ filme.titulo }}" height="300">-->
-
-                        <!--<a href="/player" id="botaoPlay">Player</a>-->
-                        <a href="/player" id="botaoPlayAlt">
+                        <a href="{{ url_for('playerFilme', id=filme.id) }}" id="botaoPlayAltFilme">
                             <img src="{{ url_for('static', filename='images/playIcon.png') }}" width="80" alt="Play Icon">
                         </a>
-                        
-                        <!--<button id="botaoPlay">Player</button>-->
                     </div>
 
                     <div class="descricaoProjeto">
                         <br><br>
                         <h2>{{ filme.titulo }}</h2>
-                        <!-- <img src="https://www.cineplayers.com/sites/default/files/posters/2020/08/god.jpg" class="posterFilme" height="300"> -->
                         <p class="descricao">Ano: {{ filme.ano }}</p>
                         <p class="descricao">Gênero: {{ filme.genero }}</p>
-                        <p class="descricao">Preço: {{ filme.preco }}</p>
+                        <p class="descricao">Sinopse: {{ filme.sinopse }}</p>
                         <p class="descricao">Diretor: {{ filme.diretor }} </p>
                         <p class="descricao">Duração: {{ filme.duracao }}</p>
                     </div>
@@ -186,17 +181,20 @@
             {% if serie %}
                 <div class="card">
                     <div class="container">
-                        <!-- <img src="https://wallpapercat.com/w/full/9/a/d/174418-1920x1080-desktop-full-hd-the-godfather-wallpaper.jpg" id="wallpaper"> -->
                         <img src="{{ serie.background }}" id="wallpaper">
                         <img src="{{ serie.poster }}" class="poster" alt="Capa da Série {{ serie.titulo }}" height="300">
                     </div>
+
+                    <a href="{{ url_for('playerSerie', id=serie.id) }}" id="botaoPlayAltSerie">
+                        <img src="{{ url_for('static', filename='images/playIcon.png') }}" width="80" alt="Play Icon">
+                    </a>
 
                     <div class="descricaoProjeto">
                         <br><br>
                         <h2>{{ serie.titulo }}</h2>
                         <p class="descricao">Ano: {{ serie.ano }}</p>
                         <p class="descricao">Gênero: {{ serie.genero }}</p>
-                        <p class="descricao">Preço: {{ serie.preco }}</p>
+                        <p class="descricao">Sinopse: {{ serie.sinopse }}</p>
                         <p class="descricao">Temporadas: {{ serie.temporadas}}</p>
                         <p class="descricao">Duração dos Episódios: {{ serie.duracaoEps }}</p>
                         <p class="descricao">Quantidade de Episodios por Temporada: {{ serie.qntEps }}</p>
@@ -205,6 +203,18 @@
             {% endif %}
         </div>
 
-    <iframe src="https://www.youtube.com/embed/mqqft2x_Aa4" frameborder="0" height="100%" width="100%"></iframe>
+<!--#################### JAVASCRIPT #####################################################-->
 
+        <script>
+            /////////////////////////////Barra de Pesquisa
+            document.getElementById('pesquisaSite').addEventListener('keydown', function (event) {
+                const termo = this.value.trim().toLowerCase();
+
+                //Verifica se a tecla pressionada foi Enter
+                if (event.key === 'Enter' && termo) {
+                    //Redireciona pra pagina de resultados com o termo da busca como parametro na URL
+                    window.location.href = `/resultados?termo=${encodeURIComponent(termo)}`;
+                }
+            });
+        </script>
 </body></html>
